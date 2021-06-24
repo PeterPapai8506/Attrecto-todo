@@ -11,3 +11,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+      
+todo:
+  jwt:
+    issuer: TodoApp
+    alg: HMAC512
+    secret: "mysecret"
+    duration: 30m

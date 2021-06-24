@@ -5,25 +5,35 @@ import java.util.List;
 import javax.validation.constraints.NotEmpty;
 
 import com.attrecto.todo.model.Todo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 public class UserDto {
 	private Long id;
 	@NotEmpty
 	private String name;
+	private List<Todo> todos;
+	private byte[] image;
 	@NotEmpty
 	private String username;
-	@NotEmpty
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	private List<Todo> todos;
+	@NotEmpty
+	private String role;
+
+	public UserDto() {
+	}
 	
-	public UserDto(Long id, @NotEmpty String name, @NotEmpty String username, @NotEmpty String password,
-			List<Todo> todos) {
+	public UserDto(Long id, @NotEmpty String name, List<Todo> todos, byte[] image, String username, String password,
+			String role) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.todos = todos;
+		this.image = image;
 		this.username = username;
 		this.password = password;
-		this.todos = todos;
+		this.role = role;
 	}
 	
 	public Long getId() {
@@ -38,6 +48,18 @@ public class UserDto {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public List<Todo> getTodos() {
+		return todos;
+	}
+	public void setTodos(List<Todo> todos) {
+		this.todos = todos;
+	}
+	public byte[] getImage() {
+		return image;
+	}
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -50,10 +72,10 @@ public class UserDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public List<Todo> getTodos() {
-		return todos;
+	public String getRole() {
+		return role;
 	}
-	public void setTodos(List<Todo> todos) {
-		this.todos = todos;
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

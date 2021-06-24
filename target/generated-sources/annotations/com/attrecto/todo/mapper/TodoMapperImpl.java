@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-06-24T23:20:34+0200",
+    date = "2021-06-25T01:35:35+0200",
     comments = "version: 1.4.2.Final, compiler: Eclipse JDT (IDE) 3.17.0.v20190306-2240, environment: Java 1.8.0_271 (Oracle Corporation)"
 )
 @Component
@@ -23,18 +23,18 @@ public class TodoMapperImpl implements TodoMapper {
             return null;
         }
 
-        String description = null;
-        Integer durationInMin = null;
         Long id = null;
         String name = null;
+        String description = null;
         LocalDateTime startTime = null;
+        Integer durationInMin = null;
         User user = null;
 
-        description = todo.getDescription();
-        durationInMin = todo.getDurationInMin();
         id = todo.getId();
         name = todo.getName();
+        description = todo.getDescription();
         startTime = todo.getStartTime();
+        durationInMin = todo.getDurationInMin();
         user = todo.getUser();
 
         TodoDto todoDto = new TodoDto( id, name, description, startTime, durationInMin, user );
@@ -50,11 +50,11 @@ public class TodoMapperImpl implements TodoMapper {
 
         Todo todo = new Todo();
 
-        todo.setDescription( todoDto.getDescription() );
-        todo.setDurationInMin( todoDto.getDurationInMin() );
         todo.setId( todoDto.getId() );
         todo.setName( todoDto.getName() );
+        todo.setDescription( todoDto.getDescription() );
         todo.setStartTime( todoDto.getStartTime() );
+        todo.setDurationInMin( todoDto.getDurationInMin() );
         todo.setUser( todoDto.getUser() );
 
         return todo;

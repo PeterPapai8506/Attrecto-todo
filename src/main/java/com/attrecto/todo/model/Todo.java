@@ -85,4 +85,10 @@ public class Todo {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	@Override
+	public String toString() {
+		return "Todo [id=" + id + ", name=" + name + ", description=" + description + ", startTime=" + startTime
+				+ ", durationInMin=" + durationInMin + ", user=" + user + "]";
+	}
 }

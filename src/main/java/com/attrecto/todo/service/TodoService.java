@@ -12,7 +12,6 @@ import com.attrecto.todo.repository.TodoRepository;
 
 @org.springframework.stereotype.Service
 public class TodoService implements Service<Todo>{
-
 	@Autowired
 	TodoRepository todoRepository;
 	
@@ -38,7 +37,10 @@ public class TodoService implements Service<Todo>{
 	
 	@Transactional
 	public void delete(long id) {
+		Optional<Todo> todo = todoRepository.findById(id);
+		if(todo.isEmpty()) {
+			return;
+		}
 		todoRepository.deleteById(id);
 	}
-		
 }

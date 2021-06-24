@@ -1,23 +1,29 @@
 package com.attrecto.todo.service;
 
+import static com.attrecto.todo.util.TodoUtil.checkUserRoleMatch;
+import static com.attrecto.todo.util.TodoUtil.getUserNameIfRoleMatch;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.attrecto.todo.model.Role;
 import com.attrecto.todo.model.Todo;
 import com.attrecto.todo.model.User;
 import com.attrecto.todo.repository.TodoRepository;
 import com.attrecto.todo.repository.UserRepository;
-import com.attrecto.todo.service.Service;
 
 import javassist.NotFoundException;
 
 @org.springframework.stereotype.Service
 public class UserService implements Service<User>{
-
 	@Autowired
 	UserRepository userRepository;
 
@@ -25,16 +31,42 @@ public class UserService implements Service<User>{
 	TodoRepository todoRepository;
 	
 	public List<User> findAll() {
-		return userRepository.findAll();
+		List<User> users = userRepository.findAll();
+		Optional<String> optUserName = getUserNameIfRoleMatch(Role.USER);
+		
+		if(optUserName.isPresent()) {
+			User filteredUser = users.stream().filter(u -> u.getUsername().equals(optUserName.get())).findFirst().get();
+			users.clear();
+			users.add(filteredUser);
+		}
+		
+		return users;
 	}
 	
 	public Optional<User> findById(long id){
-		return userRepository.findById(id);
+		Optional<String> optUserName = getUserNameIfRoleMatch(Role.USER);
+		Optional<User> optUser = userRepository.findById(id);
+		if(optUserName.isPresent()) {
+			User user = optUser.get();
+			String userName = optUserName.get();
+			
+			if(user.getUsername().equals(userName)) {
+				return optUser;
+			}
+			
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		} 
+		
+		return optUser;
 	}
 	
 	@Transactional
 	public User save(User user) {
-		return userRepository.save(user);
+		try {
+			return userRepository.save(user);
+		} catch (Exception ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@Transactional
@@ -50,8 +82,9 @@ public class UserService implements Service<User>{
 	}
 	
 	@Transactional
-	public User addTodo(long id, Todo todo) {
+	public User addTodo(long id, Todo todo) {		
 		User user = userRepository.findById(id).get();
+		checkUserRoleMatch(userRepository, user);
 		Todo savedTodo = todoRepository.save(todo);
 		user.addTodo(savedTodo);
 		todo.setUser(user);
@@ -61,6 +94,7 @@ public class UserService implements Service<User>{
 	@Transactional
 	public User deleteTodo(long id, long todoId) {
 		User user = userRepository.findById(id).get();
+		checkUserRoleMatch(userRepository, user);
 		Todo todo = todoRepository.findById(todoId).get();
 		todo.setUser(null);
 		user.getTodos().remove(todo);
@@ -76,6 +110,7 @@ public class UserService implements Service<User>{
 		}
 		
 		User user = userRepository.findById(id).get();
+		checkUserRoleMatch(userRepository, user);
 		Todo oldTodo = optTodo.get();
 		oldTodo.setUser(null);
 		user.getTodos().remove(oldTodo);
@@ -83,5 +118,14 @@ public class UserService implements Service<User>{
 		todoRepository.save(oldTodo);
 		todoRepository.save(todo);
 		return user;
+	}
+	
+	@Transactional
+	public void saveImageFile(Long id, MultipartFile file) throws IOException {
+	    User user = userRepository.findById(id).get();
+		checkUserRoleMatch(userRepository, user);
+		
+	    user.setImage(file.getBytes());
+	    userRepository.save(user);
 	}
 }
