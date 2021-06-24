@@ -1,0 +1,13 @@
+spring:
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todo
+    username: postgres
+    password: postgres
+  jpa:
+    open-in-view: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create

@@ -1,0 +1,25 @@
+spring:
+  thymeleaf:
+    cache: false
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todo
+    username: postgres
+    password: postgres
+  jpa:
+    open-in-view: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+logging:
+  level:
+    ROOT: INFO
+      
+todo:
+  jwt:
+    issuer: TodoApp
+    alg: HMAC512
+    secret: "mysecret"
+    duration: 30m
