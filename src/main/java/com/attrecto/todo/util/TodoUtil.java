@@ -63,20 +63,17 @@ public class TodoUtil {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
 
-		logger.info(String.format("TODO was %sED , by: %s at: %s", action.name(), userDetails.getUsername(),
+		logger.info(String.format("TODO was %s , by: %s at: %s", action.name(), userDetails.getUsername(),
 				dateFormat.format(new Date())));
-		if (action == TodoAction.UPDATE) {
-			logger.info("From todo: ");
-			logger.info(todoRepository.findById(todo.getId()).get().toString());
-			logger.info("To todo: ");
-			logger.info(todo.toString());
+		if (action == TodoAction.UPDATED) {
+			logger.info("From " + todoRepository.findById(todo.getId()).get().toString());
+			logger.info("To " + todo.toString());
 		} else {
-			logger.info("Todo : ");
 			logger.info(todo.toString());
 		}
 	}
 
 	public enum TodoAction {
-		CREATE, UPDATE, DELETE;
+		CREATED, UPDATED, DELETED;
 	}
 }

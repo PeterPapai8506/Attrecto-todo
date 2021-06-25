@@ -11,7 +11,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
-      
+     
+logging:
+  level:
+    ROOT: INFO
+    
 todo:
   jwt:
     issuer: TodoApp

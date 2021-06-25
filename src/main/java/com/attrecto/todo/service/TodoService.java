@@ -31,7 +31,7 @@ public class TodoService implements Service<Todo>{
 	
 	@Transactional
 	public Todo save(Todo todo) {
-		TodoUtil.logTodo(logger, todo, TodoAction.CREATE);
+		TodoUtil.logTodo(logger, todo, TodoAction.CREATED);
 		return todoRepository.save(todo);
 	}
 	
@@ -39,7 +39,7 @@ public class TodoService implements Service<Todo>{
 	public Todo update(Todo todo) {
 		if(!todoRepository.existsById(todo.getId()))
 			return null;
-		TodoUtil.logTodo(logger, todo, TodoAction.UPDATE, todoRepository);
+		TodoUtil.logTodo(logger, todo, TodoAction.UPDATED, todoRepository);
 		return todoRepository.save(todo);
 	}
 	
@@ -49,7 +49,7 @@ public class TodoService implements Service<Todo>{
 		if(todo.isEmpty()) {
 			return;
 		}
-		TodoUtil.logTodo(logger, todo.get(), TodoAction.DELETE);
+		TodoUtil.logTodo(logger, todo.get(), TodoAction.DELETED);
 		todoRepository.deleteById(id);
 	}
 }

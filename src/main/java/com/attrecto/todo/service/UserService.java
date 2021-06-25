@@ -91,7 +91,7 @@ public class UserService implements Service<User>{
 	public User addTodo(long id, Todo todo) {		
 		User user = userRepository.findById(id).get();
 		checkUserRoleMatch(userRepository, user);
-		TodoUtil.logTodo(logger, todo, TodoAction.CREATE);
+		TodoUtil.logTodo(logger, todo, TodoAction.CREATED);
 		Todo savedTodo = todoRepository.save(todo);
 		user.addTodo(savedTodo);
 		todo.setUser(user);
@@ -103,7 +103,7 @@ public class UserService implements Service<User>{
 		User user = userRepository.findById(id).get();
 		checkUserRoleMatch(userRepository, user);
 		Todo todo = todoRepository.findById(todoId).get();
-		TodoUtil.logTodo(logger, todo, TodoAction.DELETE);
+		TodoUtil.logTodo(logger, todo, TodoAction.DELETED);
 		todo.setUser(null);
 		user.getTodos().remove(todo);
 		todoRepository.save(todo);
@@ -119,7 +119,7 @@ public class UserService implements Service<User>{
 		
 		User user = userRepository.findById(id).get();
 		checkUserRoleMatch(userRepository, user);
-		TodoUtil.logTodo(logger, todo, TodoAction.CREATE);
+		TodoUtil.logTodo(logger, todo, TodoAction.CREATED);
 		Todo oldTodo = optTodo.get();
 		oldTodo.setUser(null);
 		user.getTodos().remove(oldTodo);
