@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.NotEmpty;
 
 import com.attrecto.todo.model.Todo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -12,6 +13,7 @@ public class UserDto {
 	private Long id;
 	@NotEmpty
 	private String name;
+	@JsonIgnore
 	private List<Todo> todos;
 	private byte[] image;
 	@NotEmpty

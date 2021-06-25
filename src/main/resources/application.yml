@@ -3,15 +3,17 @@ spring:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
   datasource:
+    driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/todo
     username: postgres
     password: postgres
   jpa:
     open-in-view: true
     show-sql: true
+    generate-ddl: true
     hibernate:
-      ddl-auto: create
-     
+      ddl-auto: update
+      
 logging:
   level:
     ROOT: INFO
@@ -21,4 +23,4 @@ todo:
     issuer: TodoApp
     alg: HMAC512
     secret: "mysecret"
-    duration: 30m
+    duration: 10m

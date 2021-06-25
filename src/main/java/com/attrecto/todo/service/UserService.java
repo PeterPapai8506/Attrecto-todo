@@ -69,6 +69,8 @@ public class UserService implements Service<User>{
 	@Transactional
 	public User save(User user) {
 		try {
+			if(userRepository.findByUsername(user.getUsername()).isPresent())
+				return null;			
 			return userRepository.save(user);
 		} catch (Exception ex) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
